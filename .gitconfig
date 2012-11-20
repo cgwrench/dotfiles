@@ -1,0 +1,9 @@
+[user]
+        name = Chris Wrench
+        email = c.g.wrench@gmail.com
+        editor = emacs
+[core]
+        excludesfile = ~/.gitignore
+        autocrlf = input
+[color]
+        ui = true

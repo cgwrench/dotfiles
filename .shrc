@@ -1,0 +1,88 @@
+# Customise the shell environment for interactive sessions.
+
+# Useful references:
+#
+# - Shell Command Language:
+#   <http://pubs.opengroup.org/onlinepubs/000095399/utilities/xcu_chap02.html>.
+
+## If not running interactively, don't do anything.
+#[[ $- != *i* ]] && return
+case $- in *i*) true ;; *) flase ;; esac || return
+
+## Add path to custom user shell scripts.
+test -d "${HOME}/scripts" && PATH="${HOME}/scripts:${PATH}"
+
+## Source aliases, if defined.
+test -f ${HOME}/.profile.d/aliases.sh && . ${HOME}/.profile.d/aliases.sh
+
+## Source functions, if defined.
+test -f ${HOME}/.profile.d/functions.sh && . ${HOME}/.profile.d/functions.sh
+
+##TODO Could the above (two) lines be replaced by:
+## if test -d ${HOME}/.profile.d ; then
+##   for file in ${HOME}/.profile.d/*.sh ; do
+##     if test -d ${HOME}/.profile.d/${file} ; then
+##       . ${file}
+##     fi
+##   done
+## fi
+
+## Customise shell environment variables. See chapter 8, Environment Variables,
+## of the POSIX Shell and Utilities Specification,
+## <http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html>.
+
+### Configure shell history
+export HISTFILE="${HOME}/.sh_history"
+export HISTSIZE=1000000
+
+### Define a custom user prompt to show hostname and current directory and to
+### distinguish between root and normal users.
+PS1='$(logname)@$(uname -n):$(pwd)>'
+
+NORMAL="\[\e[0m\]"
+RED="\[\e[1;31m\]"
+GREEN="\[\e[1;32m\]"
+
+#### if test "$(id -u)" -eq "0" <- More portable?
+if test `id -u` = 0 ; then
+  PS1="$RED$PS1$NORMAL "
+else
+  PS1="$GREEN$PS1$NORMAL "
+fi
+
+unset NORMAL
+unset RED
+unset GREEN
+
+### Define PS4 for debugging?
+#export PS4='[$LINENO]+'
+#set -x
+
+### Define default text editors
+export EDITOR=nano
+export VISUAL=emacs
+
+### Internationalization: use British English and UTF-8
+export LC_ALL="en_GB.UTF-8"
+export LANG="en_GB"
+
+### Prevent clobbering of existing files by the redirection operator.
+set -o noclobber
+
+### Bash specific customisations:
+if test -n "${BASH_VERSION}" ; then
+    # Ignore small directory name typos when changing directory.
+    shopt -s cdspell
+
+    # Append, rather than overwrite, history on exit.
+    shopt -s histappend
+
+    # Save multiline commands in a single history entry.
+    shopt -s cmdhist
+
+    # Erase duplicated entries in history file.
+    export HISTCONTROL=ignoredups
+
+    # Ignore some common commands.
+    export HISTIGNORE="ls:cd:cd -:pwd:* --help"
+fi
