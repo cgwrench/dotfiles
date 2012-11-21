@@ -11,6 +11,9 @@
 
 (setq load-home-init-file t) ; don't load init file from ~/.xemacs/init.el
 
+(setq inhibit-splash-screen t)
+(setq inhibit-startup-message t)
+
 ;; Control creation of backup files (ending in `~`)
 (setq backup-directory-alist `(("." . "~/.backup_files")))
 (setq backup-by-copying t
@@ -78,6 +81,8 @@
 (setq org-archive-location "~/.org/%s_archive::")
 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+
+(add-hook 'org-mode-hook 'flyspell-mode)
 
 ;; Configuration related to Python-mode.
 (add-hook 'python-mode-hook '(lambda ()
