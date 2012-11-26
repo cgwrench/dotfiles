@@ -6,8 +6,8 @@
 test -f ${HOME}/.profile && . ${HOME}/.profile
 
 # Make Bash behave more like POSIX sh
-echo 'test "${ENV}" && . ${ENV}' >| ${HOME}/.bashrc
-##TODO add `. /etc/bash.bashrc` to the above?
+echo 'test -f /etc/bash.bashrc && . /etc/bash.bashrc
+test "${ENV}" && . ${ENV}' >| ${HOME}/.bashrc
 
 echo '"\e[A": history-search-backward
 "\e[B": history-search-forward' >| ${HOME}/.inputrc

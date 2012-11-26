@@ -7,7 +7,7 @@
 
 ## If not running interactively, don't do anything.
 #[[ $- != *i* ]] && return
-case $- in *i*) true ;; *) flase ;; esac || return
+case $- in *i*) true ;; *) false ;; esac || return
 
 ## Add path to custom user shell scripts.
 test -d "${HOME}/scripts" && PATH="${HOME}/scripts:${PATH}"
@@ -20,10 +20,8 @@ test -f ${HOME}/.profile.d/functions.sh && . ${HOME}/.profile.d/functions.sh
 
 ##TODO Could the above (two) lines be replaced by:
 ## if test -d ${HOME}/.profile.d ; then
-##   for file in ${HOME}/.profile.d/*.sh ; do
-##     if test -d ${HOME}/.profile.d/${file} ; then
-##       . ${file}
-##     fi
+##   for script in ${HOME}/.profile.d/*.sh ; do
+##     test -f ${script} && . ${script}
 ##   done
 ## fi
 
@@ -34,6 +32,11 @@ test -f ${HOME}/.profile.d/functions.sh && . ${HOME}/.profile.d/functions.sh
 ### Configure shell history
 export HISTFILE="${HOME}/.sh_history"
 export HISTSIZE=1000000
+
+# Disable history file if running as root user.
+if  test `id -u` = 0 ; then
+  unset HISTFILE HISTSIZE
+fi
 
 ### Define a custom user prompt to show hostname and current directory and to
 ### distinguish between root and normal users.

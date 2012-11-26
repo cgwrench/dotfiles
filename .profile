@@ -8,7 +8,6 @@ if [ -f "${HOME}/.shrc" ] ; then
   export ENV="$HOME/.shrc"
 fi
 
-
 return
 
 ##TODO Determine a reliable way to ensure that .shrc is sourced by shells other
@@ -16,13 +15,13 @@ return
 
 # Ensure that ~/.shrc is sourced if running under Bash and other shells.
 
-# This file, .profile, is sourced at login by sh, ksh, and bash. Other shells, 
+# This file, .profile, is sourced at login by sh, ksh, and bash. Other shells,
 # such as zsh, do not source .profile, but can be made to do so by creating a
 # simlink to this file, i.e.:
 #
 #     cd; ln .profile .zshrc
 
-# See <http://stackoverflow.com/q/5166657/623518> and 
+# See <http://stackoverflow.com/q/5166657/623518> and
 # <http://stackoverflow.com/q/3327013/623518>.
 if test -n "${BASH_VERSION}" ; then
     is=bash

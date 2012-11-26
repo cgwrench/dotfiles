@@ -18,3 +18,7 @@ alias lt='ls -ltr'       # sort by date
 alias lu='ls -lur'       # sort by access time
 alias lc='ls -lcr'       # sort by change time
 alias lm='ls -al | more' # pipe through 'more'
+
+## Aliases to query path variables
+alias path='echo ${PATH} | sed "s/:/\n/g"'
+alias libpath='echo ${LD_LIBRARY_PATH} | sed "s/:/\n/g"'
